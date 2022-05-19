@@ -12,7 +12,6 @@
 </head>
 <body>
     <h1>Index</h1>
-    로그인 회원 정보: ${modelDTO} <br />
     세션에 담은 memberId: ${sessionScope.loginMemberId}<br />
     세션에 담은 Id: ${sessionScope.loginId}<br />
     <a href="save-form">회원가입 페이지</a><br />

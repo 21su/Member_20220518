@@ -12,6 +12,11 @@ public class MemberRepository {
 
     @Autowired
     public SqlSessionTemplate sql;
+
+    public MemberDTO detail(Long id) {
+        return sql.selectOne("Member.detail", id);
+    }
+
     public int save(MemberDTO memberDTO)
     {
         return sql.insert("Member.save", memberDTO);

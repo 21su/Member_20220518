@@ -12,6 +12,10 @@ public class MemberService {
     @Autowired
     public MemberRepository memberRepository;
 
+    public MemberDTO detail(Long id) {
+        return memberRepository.detail(id);
+    }
+
 
     public boolean save(MemberDTO memberDTO) {
         int saveResult = memberRepository.save(memberDTO);

@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-<h1><a href="index">MAIN</a> </h1>
+<h1><a href="/">MAIN</a> </h1>
     <h1>회원가입</h1>
     <form action="save" method="post">
         아이디: <input type="text" onblur="idchek()" id="username" name="memberId" placeholder="Id"> <br />
