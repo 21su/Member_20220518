@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -49,11 +50,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute MemberDTO logDTO,Model modelDTO){
+    public String login(@ModelAttribute MemberDTO logDTO, Model modelDTO, HttpSession session){
         MemberDTO loginMember = memberService.login(logDTO);
+        // 세션(session)
         if(loginMember != null){
             System.out.println("로그인 성공");
             modelDTO.addAttribute("modelDTO", loginMember);
+            session.setAttribute("loginMemberId", loginMember.getMemberId());
+            session.setAttribute("loginId", loginMember.getId());
             return "main";
         }else {
             System.out.println("로그인 실패");
@@ -68,8 +72,4 @@ public class MemberController {
         return "list";
     }
 
-    @GetMapping("/index")
-    public String index(){
-        return "index";
-    }
 }

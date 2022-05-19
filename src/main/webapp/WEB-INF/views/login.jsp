@@ -11,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-    <h1><a href="index">MAIN</a> </h1>
+    <h1><a href="/">MAIN</a> </h1>
     <h1>로그인</h1>
     <form action="login" method="post">
         아이디: <input type="text" name="memberId" placeholder="UserName"><br />
