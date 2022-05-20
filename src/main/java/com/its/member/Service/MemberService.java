@@ -41,4 +41,28 @@ public class MemberService {
     public List<MemberDTO> findAll() {
         return memberRepository.findAll();
     }
+
+    public void delete(Long id) {
+        memberRepository.delete(id);
+    }
+
+    public boolean update(MemberDTO memberDTO) {
+        int updateResult = memberRepository.update(memberDTO);
+        if (updateResult > 0){
+            System.out.println("true");
+            return true;
+        }else{
+            System.out.println("false");
+            return false;
+        }
+    }
+
+    public String duplicateCheck(String memberId) {
+        MemberDTO checkDTO = memberRepository.duplicateCheck(memberId);
+        if(checkDTO == null){
+            return "ok";
+        }else{
+            return "no";
+        }
+    }
 }

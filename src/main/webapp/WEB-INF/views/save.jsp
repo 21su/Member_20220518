@@ -9,23 +9,50 @@
 <html>
 <head>
     <title>Title</title>
+
+    <script src="/resources/js/jquery.js"></script>
     <script>
         function idchek(){
-            const id = document.getElementById("username").value;
+            const memberId = document.getElementById("username").value;
+            const idchek = document.getElementById("idchek");
             const exp = /^[a-z]+[a-z0-9]{5,19}$/g;
-            if(id.match(exp)){
-                document.getElementById("idchek").innerHTML = "일치";
-                document.getElementById("idchek").style.color = "green";
-            }else{
-                document.getElementById("idchek").innerHTML = "영문자로 시작하는 영문자 또는 숫자 6~20자 ";
-                document.getElementById("idchek").style.color = "red";
-            }
+            $.ajax({
+               type: "post", // http requesu method
+                url: "duplicate-check", // 요청주소
+                data: {"memberId": memberId}, //전송하는 파라미터
+                dataType: "text", // 리턴받을 데이터 형식
+                success: function (result){
+                   if(result == "ok"){
+                       if(memberId==""){
+                           idchek.innerHTML = "필수입력입니다.";
+                           idchek.style.color = "red";
+                       }
+                       else if(memberId.match(exp)){
+                           idchek.innerHTML = "사용가능한 아이디입니다.";
+                           idchek.style.color = "green";
+                       }else{
+                           idchek.innerHTML = "영문자로 시작하는 영문자 또는 숫자 6~20자 ";
+                           idchek.style.color = "red";
+                       }
+                   }else{
+                       idchek.innerHTML = "사용 불가능한 아이디입니다.";
+                       idchek.style.color = "red";
+                   }
+                },
+                error: function (){
+                   alert("오타체크");
+                }
+            });
         }
         function passwordchek(){
             const password = document.getElementById("password").value;
             const exp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
-            if(password.match(exp)){
-                document.getElementById("passchek").innerHTML = "일치";
+            if(password== ""){
+                document.getElementById("passchek").innerHTML = "필수입력입니다";
+                document.getElementById("passchek").style.color = "red";
+            }
+            else if(password.match(exp)){
+                document.getElementById("passchek").innerHTML = "사용가능한 비밀번호입니다.";
                 document.getElementById("passchek").style.color = "green";
             }else{
                 document.getElementById("passchek").innerHTML = "8 ~ 16자 영문, 숫자 조합";
@@ -35,14 +62,19 @@
         function numberchek(){
             const number = document.getElementById("number").value;
             const exp = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
-            if(number.match(exp)){
-                document.getElementById("numberchek").innerHTML = "일치";
+            if(number == ""){
+                document.getElementById("numberchek").innerHTML = "필수 정보입니다.";
+                document.getElementById("numberchek").style.color = "red";
+            }
+            else if(number.match(exp)){
+                document.getElementById("numberchek").innerHTML = "확인되었습니다.";
                 document.getElementById("numberchek").style.color = "green";
             }else{
                 document.getElementById("numberchek").innerHTML = "000-0000-0000";
                 document.getElementById("numberchek").style.color = "red";
             }
         }
+
     </script>
     <style>
         .chk{

@@ -33,4 +33,17 @@ public class MemberRepository {
     public MemberDTO sameChk(MemberDTO logDTO) {
         return sql.selectOne("Member.same",logDTO);
     }
+
+    public void delete(Long id) {
+        sql.delete("Member.delete",id);
+    }
+
+    public int update(MemberDTO memberDTO) {
+        System.out.println("MemberRepository.update");
+        return  sql.update("Member.update", memberDTO);
+    }
+
+    public MemberDTO duplicateCheck(String memberId) {
+        return sql.selectOne("Member.same", memberId);
+    }
 }

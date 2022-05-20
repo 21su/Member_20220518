@@ -11,7 +11,7 @@
     <select id="same" parameterType="member" resultType="member">
         select * from member_table where memberId = #{memberId};
     </select>
-    <select id="login" parameterType="member" resultType="member">
+    <select id="login" parameterType="String" resultType="member">
         select * from member_table where memberId = #{memberId} and memberPassword = #{memberPassword};
     </select>
     <select id="findAll" resultType="member">
@@ -20,4 +20,10 @@
     <select id="detail" parameterType="Long" resultType="member">
         select * from member_table where Id = #{Id}
     </select>
+    <delete id="delete" parameterType="Long">
+        delete from member_table where Id = #{id}
+    </delete>
+    <update id="update" parameterType="member">
+        update member_table set memberPhone = #{memberPhone} where id=#{id}
+    </update>
 </mapper>

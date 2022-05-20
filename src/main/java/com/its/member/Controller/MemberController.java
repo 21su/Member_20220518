@@ -1,14 +1,12 @@
 package com.its.member.Controller;
 
 import com.its.member.DTO.MemberDTO;
+import com.its.member.Repository.MemberRepository;
 import com.its.member.Service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -72,11 +70,64 @@ public class MemberController {
         model.addAttribute("memberList",memberList);
         return "list";
     }
-    @GetMapping("detail")
+    @GetMapping("/detail")
     public String detail(@RequestParam("id") Long id, Model model){
         System.out.println(id);
         MemberDTO detailDTO = memberService.detail(id);
         model.addAttribute("detailDTO",detailDTO);
         return "detail";
     }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") Long id, Model model){
+        System.out.println(id);
+        memberService.delete(id);
+        //redirect를 이용하여 findAll 주소요청
+        return "redirect:/findAll";
+    }
+    @GetMapping("/update-form")
+    public String updateForm(HttpSession session, Model model){
+        Long updateId = (Long) session.getAttribute("loginId");
+        System.out.println("updateId : " + updateId);
+        MemberDTO updateDTO = memberService.detail(updateId);
+        model.addAttribute("updateDTO", updateDTO);
+        return "update";
+    }
+    @PostMapping("/update")
+    public String update(@ModelAttribute MemberDTO memberDTO){
+        boolean updateResult = memberService.update(memberDTO);
+        if(updateResult){
+            //해당 회원의 상세정보
+            return "redirect:/detail?id=" + memberDTO.getId();
+        }else{
+            return "update-fail";
+        }
+    }
+
+    @PostMapping("/duplicate-check")
+    public @ResponseBody String duplicateCheck(@RequestParam("memberId") String memberId){
+        System.out.println("memberId = " + memberId);
+        String checkResult = memberService.duplicateCheck(memberId);
+        System.out.println(checkResult);
+        return checkResult;
+    }
+    @GetMapping("/response-test")
+    public @ResponseBody String responseTest(){
+        return "name";
+    }
+    @GetMapping("/response-test2")
+    public @ResponseBody List<MemberDTO> responseTest2(){
+        return memberService.findAll();
+    }
+    @PostMapping("/find-detail")
+    public @ResponseBody MemberDTO findDetail(@RequestParam("id") Long id){
+        MemberDTO memberDTO = memberService.detail(id);
+        return  memberDTO;
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "index";
+    }
+
 }
